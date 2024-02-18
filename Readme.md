@@ -46,6 +46,7 @@ Comprehensive test cases were developed to ensure the reliability and security o
 
 -   User passwords are securely hashed using Django's built-in mechanisms.
 -   Token-based authentication secures API endpoints against unauthorized access.
+-   Cross-Origin Resource Sharing (CORS) is configured to allow requests from trusted domains, enhancing security for web clients hosted on different domains.
 
 ## Setup Instructions
 
@@ -65,33 +66,41 @@ Comprehensive test cases were developed to ensure the reliability and security o
  2. **Create and Activate Virtual Environment**
  
 	 - For Linux/macOS:
-    		`git clone https://github.com/your-username/your-repo-name.git`
-		
-  		`cd your-repo-name`
+            
+            git clone https://github.com/your-username/your-repo-name.git
+
+		    cd your-repo-name
 
 
 	 - For Windows:
-    		`python -m venv venv`
-		    ``.\venv\Scripts\activate``
+
+    		python -m venv venv
+
+		    .\venv\Scripts\activate
 
  3. **Install Dependencies**
 
-		`pip install -r requirements.txt`
+		pip install -r requirements.txt
 
  4. **Apply Migrations**
-		`python manage.py makemigrations`
-		`python manage.py migrate`
+
+		python manage.py makemigrations
+
+		python manage.py migrate
 
  5. **Create Superuser(Optional)**
-		 `python manage.py createsuperuser`
+
+		 python manage.py createsuperuser
 		 
 
  6. **Run the dev server**
-		 `python manage.py runserver`
+
+        python manage.py runserver
 
  7. **Running Tests**
-		 Execute the following command to run the automated test suite:
-		`python manage.py test`
+    Execute the following command to run the automated test suite:
+
+		python manage.py test
 
  7. **Accessing API Documentation**
 
