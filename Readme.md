@@ -46,7 +46,6 @@ Comprehensive test cases were developed to ensure the reliability and security o
 
 -   User passwords are securely hashed using Django's built-in mechanisms.
 -   Token-based authentication secures API endpoints against unauthorized access.
--   Cross-Origin Resource Sharing (CORS) is configured to allow requests from trusted domains, enhancing security for web clients hosted on different domains.
 
 ## Setup Instructions
 
