@@ -16,30 +16,46 @@ from django.contrib.auth.password_validation import validate_password
 
 # Create your views here.
 
+from django.db.utils import IntegrityError
+
+
+# Create your views here.
 
 @api_view(['POST'])
 def register_user(request):
+    username = request.data.get('username')
+    email = request.data.get('email')
+    password = request.data.get('password')
+
+    # Validate email format
     try:
-        # Extract password from the request
-        password = request.data['password']
+        validate_email(email)
+    except ValidationError:
+        return Response({'error': 'Invalid email format'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Validate the password
+    # Validate password
+    try:
         validate_password(password)
+    except ValidationError as e:
+        return Response({'error': e.messages}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Proceed with user creation if the password is valid
+    # Check if the username or email already exists
+    if User.objects.filter(username=username).exists():
+        return Response({'error': 'Username is already taken.'}, status=status.HTTP_400_BAD_REQUEST)
+    if User.objects.filter(email=email).exists():
+        return Response({'error': 'Email is already in use.'}, status=status.HTTP_400_BAD_REQUEST)
+
+    # Create user if validations pass
+    try:
         user = User.objects.create(
-            username=request.data['username'],
-            email=request.data['email'],
+            username=username,
+            email=email,
             password=make_password(password)
         )
         user.save()
         return Response({'message': 'User registered successfully'}, status=status.HTTP_201_CREATED)
-    except ValidationError as e:
-        # Return a 400 Bad Request response if password validation fails
-        return Response({'error': e.messages}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        # Handle other exceptions
-        return Response({'error': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Failed to register the user.'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -134,7 +150,7 @@ def share_note(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def get_note_history(request, id):
+def note_history(request, id):
     try:
         note = Note.objects.get(id=id, owner=request.user)
         history = NoteHistory.objects.filter(note=note).order_by('-edited_at')
@@ -142,4 +158,4 @@ def get_note_history(request, id):
                          "edited_by": h.edited_by.username} for h in history]
         return Response(history_data)
     except Note.DoesNotExist:
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response({'error': 'Note not found'}, status=status.HTTP_404_NOT_FOUND)

@@ -5,6 +5,12 @@
 
 This note-taking application API provides a secure and efficient way for users to create, manage, and share notes. Built with Django and Django Rest Framework (DRF), it features user authentication, CRUD operations for notes, note sharing among users, and version history tracking to ensure robust note management.
 
+## Hosted on:
+    https://neofi-epcs.onrender.com/
+
+Refer the curltests.txt file to simplify interacting with the deployed API
+### NOTE: Render shuts down instances(free plans) when its not active. Therefore it might take ~1 min for it to respond initially. 
+
 ## Technical Specifications
 
 ### Endpoints Implemented
